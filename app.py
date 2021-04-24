@@ -2,19 +2,15 @@ import os
 from flask import Flask, render_template, request
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
-from flask_pymongo import PyMongo
-
-MONGODB_NAME = os.environ.get('MONGODB_NAME', None)
-MONGODB_URI = os.environ.get('MONGODB_URI', None)
 
 app = Flask(__name__)
-# app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
-# mongo = PyMongo(app)
+
+MONGODB_URI = os.environ.get('MONGODB_URI', "Environment variable does not exist")
+# MONGODB_URI = 'mongodb://localhost:27017/chatterbot-database'
 
 english_bot = ChatBot("English Bot",
-                     storage_adapter = "chatterbot.storage.MongoDatabaseAdapter",
-                     database = MONGODB_NAME,
-                     database_uri = MONGODB_URI)
+                      storage_adapter="chatterbot.storage.MongoDatabaseAdapter",
+                      database_uri=MONGODB_URI)
 trainer = ChatterBotCorpusTrainer(english_bot)
 trainer.train("chatterbot.corpus.english")
 
