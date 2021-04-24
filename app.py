@@ -3,7 +3,8 @@ from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 
 app = Flask(__name__)
-
+MONGODB_NAME = ""
+MONGODB_URI = ""
 english_bot = ChatBot("English Bot",
                      storage_adapter = "chatterbot.storage.MongoDatabaseAdapter",
                      database = MONGODB_NAME,
