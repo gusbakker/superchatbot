@@ -5,11 +5,13 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 
 app = Flask(__name__)
 
+MONGODB_NAME = os.environ.get('MONGODB_NAME', "Environment variable does not exist")
 MONGODB_URI = os.environ.get('MONGODB_URI', "Environment variable does not exist")
 # MONGODB_URI = 'mongodb://localhost:27017/chatterbot-database'
 
 english_bot = ChatBot("English Bot",
                       storage_adapter="chatterbot.storage.MongoDatabaseAdapter",
+                      database=MONGODB_NAME,
                       database_uri=MONGODB_URI)
 trainer = ChatterBotCorpusTrainer(english_bot)
 trainer.train("chatterbot.corpus.english")
