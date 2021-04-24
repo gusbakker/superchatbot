@@ -1,16 +1,15 @@
+import os
 from flask import Flask, render_template, request
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
-import environ
+from flask_pymongo import PyMongo
 
-ROOT_DIR = (
-        environ.Path(__file__)
-)
-APPS_DIR = ROOT_DIR.path("superchatbot")
-env = environ.Env()
+MONGODB_NAME = os.environ.get('MONGODB_NAME', None)
+MONGODB_URI = os.environ.get('MONGODB_URI', None)
 
-MONGODB_NAME = env("MONGODB_NAME")
-MONGODB_URI = env("MONGODB_URI")
+app = Flask(__name__)
+# app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
+# mongo = PyMongo(app)
 
 english_bot = ChatBot("English Bot",
                      storage_adapter = "chatterbot.storage.MongoDatabaseAdapter",
@@ -19,7 +18,6 @@ english_bot = ChatBot("English Bot",
 trainer = ChatterBotCorpusTrainer(english_bot)
 trainer.train("chatterbot.corpus.english")
 
-app = Flask(__name__)
 
 @app.route("/")
 def home():
